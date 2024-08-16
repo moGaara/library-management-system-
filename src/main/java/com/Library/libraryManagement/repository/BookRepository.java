@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Integer>
 {
+    boolean existsBooksByAuthor(String author);
+    boolean existsBooksByTitle(String title);
 }

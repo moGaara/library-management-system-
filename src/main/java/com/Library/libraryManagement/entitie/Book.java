@@ -2,6 +2,8 @@ package com.Library.libraryManagement.entitie;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
@@ -18,12 +20,19 @@ public class Book
     private int id;
 
 
+    @NotNull(message = "title should not be null")
+    @NotEmpty(message = "title should not be empty")
     private String title;
 
+    @NotNull(message = "author should not be null")
+    @NotEmpty(message = "author should not be empty")
     private String author;
 
+
+    @NotNull(message = "publishYear should not be null")
+    @NotEmpty(message = "publishYear should not be empty")
     private String publishYear;
 
-    private int ISBN;
+
 
 }

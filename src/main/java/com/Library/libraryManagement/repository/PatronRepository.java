@@ -7,5 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PatronRepository extends JpaRepository<Patron, Integer>
 {
-
+    boolean existsByName(String name);
+    boolean existsByEmail(String email);
+    boolean existsByNumber(String number);
 }
