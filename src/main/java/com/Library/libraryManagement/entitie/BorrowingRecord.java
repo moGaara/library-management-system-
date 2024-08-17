@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Entity
 @Table(name = "borrowing_records")
-public class BorroingRecord
+public class BorrowingRecord
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +21,19 @@ public class BorroingRecord
     private LocalDate borrowDate;
     private LocalDate returnDate;
     private String status;
+
+
+
+
+    @ManyToOne
+    @JoinColumn(name = "book_id", nullable = false)
+    private Book book;
+
+
+    @ManyToOne
+    @JoinColumn(name = "patron_id", nullable = false)
+    private Patron patron;
+
 
 
 }

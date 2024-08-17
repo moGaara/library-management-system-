@@ -3,10 +3,17 @@ package com.Library.libraryManagement.controller;
 
 import com.Library.libraryManagement.dto.BookDTO;
 import com.Library.libraryManagement.dto.PatronDTO;
+import com.Library.libraryManagement.entitie.Patron;
 import com.Library.libraryManagement.service.PatronService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/patrons")
@@ -17,11 +24,13 @@ public class PatronController
     private final PatronService patronService;
 
     @GetMapping("{id}")
-    public ResponseEntity<?> getBook(@PathVariable int id)
+    public ResponseEntity<?> getPatron(@PathVariable int id)
     {
         try
         {
-            return ResponseEntity.ok().body(patronService.getPatron(id));
+            Patron patron = patronService.getPatron(id);
+            Map<String, String> patronMap = transformPatronToMap(patron);
+            return ResponseEntity.ok().body(patronMap);
         }
         catch (Exception exception)
         {
@@ -31,11 +40,22 @@ public class PatronController
 
 
     @GetMapping
-    public ResponseEntity<?> getAllBooks()
+    public ResponseEntity<?> getAllPatrons()
     {
         try
         {
-            return ResponseEntity.ok().body(patronService.getAllPatrons());
+            List<Patron> patronList = patronService.getAllPatrons();
+            List<Map<String, String>> patronMapList = new ArrayList<>();
+
+
+            for (Patron patron : patronList)
+            {
+
+                Map<String, String> patronToMap = transformPatronToMap(patron);
+                patronMapList.add(patronToMap);
+
+            }
+            return ResponseEntity.ok().body(patronMapList);
         }
         catch (Exception exception)
         {
@@ -46,7 +66,7 @@ public class PatronController
 
 
     @PostMapping
-    public ResponseEntity<?> addBook(@RequestBody PatronDTO patronDTO)
+    public ResponseEntity<?> addPatron(@Valid@RequestBody PatronDTO patronDTO)
     {
         try
         {
@@ -62,7 +82,7 @@ public class PatronController
 
 
     @DeleteMapping("/{id}")
-    public  ResponseEntity<?> deleteBook(@PathVariable int id)
+    public  ResponseEntity<?> deletePatron(@PathVariable int id)
     {
         try
         {
@@ -79,7 +99,7 @@ public class PatronController
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateBook(@RequestBody PatronDTO patronDTO, @PathVariable int id)
+    public ResponseEntity<?> updatePatron(@Valid@RequestBody PatronDTO patronDTO, @PathVariable int id)
     {
         try
         {
@@ -92,6 +112,16 @@ public class PatronController
 
         return ResponseEntity.ok().build();
 
+    }
+
+    private Map<String, String> transformPatronToMap(Patron patron)
+    {
+        Map<String, String> bookMap = new HashMap<>();
+        bookMap.put("Name", patron.getName());
+        bookMap.put("Email", patron.getEmail());
+        bookMap.put("Number", patron.getNumber());
+
+        return bookMap;
     }
 
 }

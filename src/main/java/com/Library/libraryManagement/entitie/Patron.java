@@ -3,6 +3,9 @@ package com.Library.libraryManagement.entitie;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -22,5 +25,7 @@ public class Patron
 
     private String number;
 
+    @OneToMany(mappedBy = "patron")
+    private List<BorrowingRecord> borrowingRecords;
 
 }

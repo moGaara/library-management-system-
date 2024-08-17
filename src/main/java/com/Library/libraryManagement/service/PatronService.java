@@ -11,6 +11,9 @@ import com.Library.libraryManagement.repository.PatronRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -27,50 +30,35 @@ public class PatronService
 
 
 
-    public Map<String, String> getPatron(int id)
+
+
+    @Cacheable(value = "patrons", key = "#id")
+    public Patron getPatron(int id)
     {
         Optional<Patron> optionalPatron = patronRepository.findById(id);
 
         if(optionalPatron.isEmpty())throw new NoSuchElementException("Patron with id: " + id + " is not found.");
 
-        Patron patron = optionalPatron.get();
-
-        Map<String, String> patronMap = transformPatronToMap(patron);
-
-        return patronMap;
+        return optionalPatron.get();
 
     }
 
 
 
-    public List<Map<String, String>> getAllPatrons()
+    @Cacheable(value = "patrons")
+    public List<Patron> getAllPatrons()
     {
         List<Patron> patronList =patronRepository.findAll();
 
         if(patronList.isEmpty())throw new RuntimeException("There are no Patrons here!");
 
-        List<Map<String, String>> patronMapList = new ArrayList<>();
-
-
-        for (Patron patron : patronList)
-        {
-            try
-            {
-                Map<String, String> patronToMap = transformPatronToMap(patron);
-                patronMapList.add(patronToMap);
-            }
-            catch (Exception exception)
-            {
-                throw new RuntimeException("Failed to transform patron data.", exception);
-            }
-        }
-
-        return patronMapList;
+        return patronList;
     }
 
 
 
     @Transactional
+    @CachePut(value = "patrons", key = "#patronDTO.id")
     public void addPatron( PatronDTO patronDTO)
     {
 
@@ -116,6 +104,7 @@ public class PatronService
 
 
     @Transactional
+    @CachePut(value = "patrons", key = "#id")
     public void updatePatron(PatronDTO patronDTO, int id) {
 
         Optional<Patron> optionalPatron = patronRepository.findById(id);
@@ -175,6 +164,7 @@ public class PatronService
 
 
     @Transactional
+    @CacheEvict(value = "patrons", key = "#id")
     public void deletePatron(int id)
     {
         Optional<Patron> optionalPatron = patronRepository.findById(id);
@@ -193,13 +183,4 @@ public class PatronService
 
 
 
-    private Map<String, String> transformPatronToMap(Patron patron)
-    {
-        Map<String, String> bookMap = new HashMap<>();
-        bookMap.put("Name", patron.getName());
-        bookMap.put("Email", patron.getEmail());
-        bookMap.put("Number", patron.getNumber());
-
-        return bookMap;
-    }
 }

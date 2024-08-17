@@ -8,6 +8,9 @@ import com.Library.libraryManagement.repository.BookRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -22,48 +25,33 @@ public class BookService
 
 
 
-    public Map<String, String> getBook(int id)
+    @Cacheable(value = "books", key = "#id")
+    public Book getBook(int id)
     {
         Optional<Book> optionalBook = bookRepository.findById(id);
 
         if(optionalBook.isEmpty())throw new NoSuchElementException("Book with id: " + id + " is not found.");
 
-        Book book = optionalBook.get();
-
-        Map<String, String> bookMap = transformbookToMap(book);
-
-        return bookMap;
+        return optionalBook.get();
 
     }
 
-    public List<Map<String, String>> getAllBooks()
+    @Cacheable(value = "books")
+    public List<Book> getAllBooks()
     {
         List<Book> bookList = bookRepository.findAll();
 
         if(bookList.isEmpty())throw new RuntimeException("There is no books in the library!");
 
-        List<Map<String, String>> booksMapList = new ArrayList<>();
+        return bookList;
 
 
-        for (Book book : bookList)
-        {
-            try
-            {
-                Map<String, String> bookMap = transformbookToMap(book);
-                booksMapList.add(bookMap);
-            }
-            catch (Exception exception)
-            {
-                throw new RuntimeException("Failed to transform book data.", exception);
-            }
-        }
-
-        return booksMapList;
     }
 
 
 
     @Transactional
+    @CachePut(value = "books", key = "#bookDTO.id")
     public void addBook(@Valid BookDTO bookDTO)
     {
 
@@ -91,6 +79,7 @@ public class BookService
     }
 
     @Transactional
+    @CacheEvict(value = "books", key = "#id")
     public void deleteBook(int id)
     {
         Optional<Book> optionalBook = bookRepository.findById(id);
@@ -109,6 +98,7 @@ public class BookService
 
 
     @Transactional
+    @CachePut(value = "books", key = "#id")
     public void updateBook(@Valid BookDTO bookDTO, int id)
     {
 
@@ -139,13 +129,6 @@ public class BookService
 
     }
 
-    private Map<String, String> transformbookToMap(Book book) {
-        Map<String, String> bookMap = new HashMap<>();
-        bookMap.put("Title", book.getTitle());
-        bookMap.put("Author", book.getAuthor());
-        bookMap.put("Publish Year", book.getPublishYear());
 
-        return bookMap;
-    }
 
 }
