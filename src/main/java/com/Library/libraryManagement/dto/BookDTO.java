@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class BookDTO
 {
 
-    @NotNull(message = "title should not be null")
+     @NotNull(message = "title should not be null")
     @NotEmpty(message = "title should not be empty")
     String title;
 

@@ -51,7 +51,7 @@ public class BookService
 
 
     @Transactional
-    @CachePut(value = "books", key = "#bookDTO.id")
+    @CachePut(value = "books", key = "#bookDTO.title + '_' + #bookDTO.author")
     public void addBook(@Valid BookDTO bookDTO)
     {
 

@@ -58,8 +58,8 @@ public class PatronService
 
 
     @Transactional
-    @CachePut(value = "patrons", key = "#patronDTO.id")
-    public void addPatron( PatronDTO patronDTO)
+    @CachePut(value = "patrons", key = "#patronDTO.email")
+    public void addPatron(@Valid PatronDTO patronDTO)
     {
 
 
@@ -105,7 +105,7 @@ public class PatronService
 
     @Transactional
     @CachePut(value = "patrons", key = "#id")
-    public void updatePatron(PatronDTO patronDTO, int id) {
+    public void updatePatron(@Valid PatronDTO patronDTO, int id) {
 
         Optional<Patron> optionalPatron = patronRepository.findById(id);
         if (optionalPatron.isEmpty())
