@@ -97,7 +97,7 @@ public class BookController
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateBook(@RequestBody BookDTO bookDTO, @PathVariable int id)
+    public ResponseEntity<?> updateBook(@Valid@RequestBody BookDTO bookDTO, @PathVariable int id)
     {
         try
         {
