@@ -94,7 +94,7 @@ Delete Patron
 - delete a patron by sending the id.
 
 
-update a patron
+Update a patron
 -PUT /api/patrons/{id}
 -Updating the details of a patron by sending the ID.
 -  in the request send this book details as follow:
