@@ -5,7 +5,7 @@ A comprehensive Library Management System built with Spring Boot and Hibernate t
 ## API Documentation
 The API allows interaction with the Library Management System programmatically. Below is a list of the available endpoints and their usage.
 
-##Get Book
+###Get Book
 - Get /api/books/{id}
 - getting the details of specific book by sending the id.
 - Response: it will retreive the title, author and puplish year.
