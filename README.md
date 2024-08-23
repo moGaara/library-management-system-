@@ -5,20 +5,44 @@ A comprehensive Library Management System built with Spring Boot and Hibernate t
 ## API Documentation
 The API allows interaction with the Library Management System programmatically. Below is a list of the available endpoints and their usage.
 
+
+Register
+- POST /api/register
+- Note: the system accepts only gmail accounts.
+- Register a new user to the system by sending
+  {
+      "firstName" : "test",
+      "lastName" : "test",
+      "email" : "test@gmail.com",
+      "password" : "pass"
+  }
+- Response: you will get a JWT token that you will need to send any other endpoint to be able to use them.
+
+Login
+- POST api/login
+- Log in to the system using email and password.
+- Response: you will get a JWT token that you will need to send any other endpoint to be able to use them.
+
+
+Logout
+- POST api/logout
+- Logout by sending the JWT token.
+
+
 Get Book
-- Get /api/books/{id}
+- GET /api/books/{id}
 - getting the details of specific book by sending the id.
 - Response: it will retreive the title, author and puplish year.
 
 Get all books
-- Get /api/books
-- getting the details of all books in the system
+- GET /api/books
+- getting the details of all books in the system.
 - Response: it will retreive the title, author and puplish year.
 
 
 Add Book
-- Post /api/books
-- Add book to the library
+- POST /api/books
+- Add book to the library.
 - in the request send this book details as follow:
   {
     "title" : "Your Book Title",
@@ -28,13 +52,13 @@ Add Book
 
 
 Delete Book
-- Delete /api/books/{id}
-- delete a book by sending the id
+- DELETE /api/books/{id}
+- delete a book by sending the id.
 
 
 update a book
 -PUT /api/books/{id}
--Updating the details of a book by sending the ID
+-Updating the details of a book by sending the ID.
 -  in the request send this book details as follow:
   {
     "title" : "Your Book Title",
@@ -44,19 +68,19 @@ update a book
 
 
 Get Patron
-- Get /api/patrons/{id}
+- GET /api/patrons/{id}
 - getting the details of specific patron by sending the id.
 - Response: it will retreive the title, author and puplish year.
 
 Get all Patrons
 - Get /api/patrons
-- getting the details of all patrons in the system
+- getting the details of all patrons in the system.
 - Response: it will retreive the title, author and puplish year.
 
 
 Add Patron
-- Post /api/patrons
-- Add patron to the system
+- POST /api/patrons
+- Add patron to the system.
 - in the request send this patron details as follow:
   {
       "name" : "Your name",
@@ -66,13 +90,13 @@ Add Patron
 
 
 Delete Patron
-- Delete /api/patrons/{id}
-- delete a patron by sending the id
+- DELETE /api/patrons/{id}
+- delete a patron by sending the id.
 
 
 update a patron
 -PUT /api/patrons/{id}
--Updating the details of a patron by sending the ID
+-Updating the details of a patron by sending the ID.
 -  in the request send this book details as follow:
 {
       "name" : "Your name",
@@ -81,6 +105,15 @@ update a patron
   }
 
 
-  
+Borrow a Book
+-POST /api/borrow/{bookId}/patron/{patronId}
+- Borrow  book by sending book and patrons IDs as path variables and returning date as follow:
+  {
+    "returnDate" : "2024-08-25"
+  }
+
+Return a Book
+-  PUT /api/return/{bookId}/patron/{patronId}
+-  Record the return of a borrowed book by a patron.
 
 
