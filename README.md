@@ -56,9 +56,10 @@ Delete Book
 - delete a book by sending the id.
 
 
-update a book
--PUT /api/books/{id}
--Updating the details of a book by sending the ID.
+
+Update a Book
+- PUT /api/books/{id}
+- Updating the details of a book by sending the ID.
 -  in the request send this book details as follow:
   {
     "title" : "Your Book Title",
@@ -94,9 +95,11 @@ Delete Patron
 - delete a patron by sending the id.
 
 
+
+
 Update a patron
--PUT /api/patrons/{id}
--Updating the details of a patron by sending the ID.
+- PUT /api/patrons/{id}
+- Updating the details of a patron by sending the ID.
 -  in the request send this book details as follow:
 {
       "name" : "Your name",
@@ -105,8 +108,9 @@ Update a patron
   }
 
 
+
 Borrow a Book
--POST /api/borrow/{bookId}/patron/{patronId}
+- POST /api/borrow/{bookId}/patron/{patronId}
 - Borrow  book by sending book and patrons IDs as path variables and returning date as follow:
   {
     "returnDate" : "2024-08-25"
